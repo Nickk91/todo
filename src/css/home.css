@@ -1,3 +1,6 @@
 .true {
   text-decoration-line: line-through;
 }
+.line-out {
+  text-decoration-line: line-through;
+}

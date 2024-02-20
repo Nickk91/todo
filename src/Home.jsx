@@ -1,23 +1,24 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { deleteTask } from "./TaskReducer";
+import { Link, useNavigate } from "react-router-dom";
+import { completeTask, deleteTask } from "./TaskReducer";
 import "./css/home.css";
 const Home = () => {
   const [completed, setCompleted] = useState(false);
   const tasks = useSelector((state) => state.tasks);
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const handleDelete = (id) => {
     dispatch(deleteTask({ id: id }));
   };
 
-  const handleComplete = (event) => {
+  const handleComplete = (id) => {
     dispatch(
       completeTask({
         id: id,
-        description: udescription,
       })
     );
+    console.log("complete");
     navigate("/");
   };
 
@@ -39,15 +40,17 @@ const Home = () => {
         <tbody>
           {tasks.map((task, index) => (
             <tr key={index}>
-              <td className={`${task.completed}`}>{task.id}</td>
-              <td className={`${task.completed}`}>{task.name}</td>
-              <td className={`${task.completed}`}>{task.description}</td>
+              <td className={`${task.completed? "line-out": ""}`}>{task.id}</td>
+              <td className={`${task.completed? "line-out": ""}`}>{task.name}</td>
+              <td className={`${task.completed? "line-out": ""}`}>{task.description}</td>
               <td>
                 <Link to={`/edit/${task.id}`}>Edit</Link>
                 <button onClick={() => handleDelete(task.id)}>Delete</button>
-                <button onClick={() => handleComplete(task.id)}>
+                {task.completed?(<button onClick={() => handleComplete(task.id)}>
+                  Mark as Incomplete
+                </button>):((<button onClick={() => handleComplete(task.id)}>
                   Mark as Complete
-                </button>
+                </button>))}
               </td>
             </tr>
           ))}
