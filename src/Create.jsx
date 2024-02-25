@@ -1,21 +1,23 @@
 import React, { useState } from "react";
-import { addTask } from "./TaskReducer.jsx";
-import { useDispatch, useSelector } from "react-redux";
+// import { addTask } from "./TaskReducer.jsx";
+// import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useCreateTodoMutation } from "./api/apiSlice.js";
 
 const Create = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [createTodo] = useCreateTodoMutation();
 
-  const tasks = useSelector((state) => state.tasks);
-  const dispatch = useDispatch();
+  // const tasks = useSelector((state) => state.tasks);
+  // const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(
-      addTask({ id: tasks[tasks.length - 1].id + 1, name, description })
-    );
+    createTodo({ name: name, description: description });
+    setName("");
+    setDescription("");
     navigate("/");
   };
   return (
